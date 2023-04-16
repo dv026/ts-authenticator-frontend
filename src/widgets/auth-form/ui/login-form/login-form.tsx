@@ -64,7 +64,9 @@ export const LoginForm: FC<LoginFormProp> = ({
         />
       </Form.Item>
       <Form.Item css={styles.submitButtonContainer}>
-        <Button type="primary">{getMainButtonText()}</Button>
+        <Button htmlType="submit" type="primary">
+          {getMainButtonText()}
+        </Button>
       </Form.Item>
       <div css={styles.extraButtons}>
         {isLoginStep && (
