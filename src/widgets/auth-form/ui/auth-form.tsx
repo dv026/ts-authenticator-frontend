@@ -65,7 +65,7 @@ export const AuthForm: FC = () => {
         )
       }
       case EAuthStep.ResetPassword: {
-        return <ResetPasswordForm />
+        return <ResetPasswordForm setLoginStep={setLoginStep} />
       }
       default: {
         return null

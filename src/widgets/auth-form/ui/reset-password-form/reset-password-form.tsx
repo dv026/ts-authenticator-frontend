@@ -7,7 +7,13 @@ import { validateResetPasswords } from "../../lib/validate-password"
 import { styles } from "./styles"
 import { IResetCredentials } from "../../model"
 
-export const ResetPasswordForm: FC = () => {
+interface ResetPasswordFormProps {
+  setLoginStep: () => void
+}
+
+export const ResetPasswordForm: FC<ResetPasswordFormProps> = ({
+  setLoginStep,
+}) => {
   const { token } = useParams()
   const navigate = useNavigate()
   const [api, contextHolder] = notification.useNotification()
@@ -25,7 +31,7 @@ export const ResetPasswordForm: FC = () => {
       resetPassword({
         token: token || "",
         newPassword: resetCredentials.password,
-      }).finally(() => navigate("/login"))
+      }).finally(() => setLoginStep())
     } else {
       errors.forEach((error) => {
         api.error({ message: error })
