@@ -1,7 +1,7 @@
 import { Button, Form, Input, notification } from "antd"
 import { FC, useState } from "react"
 import { resetPassword } from "ts-authenticator-client"
-import { useParams } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 
 import { validateResetPasswords } from "../../lib/validate-password"
 import { styles } from "./styles"
@@ -9,6 +9,7 @@ import { IResetCredentials } from "../../model"
 
 export const ResetPasswordForm: FC = () => {
   const { token } = useParams()
+  const navigate = useNavigate()
   const [api, contextHolder] = notification.useNotification()
   const [resetCredentials, setResetCredentials] = useState<IResetCredentials>({
     password: "",
@@ -24,7 +25,7 @@ export const ResetPasswordForm: FC = () => {
       resetPassword({
         token: token || "",
         newPassword: resetCredentials.password,
-      })
+      }).finally(() => navigate("/login"))
     } else {
       errors.forEach((error) => {
         api.error({ message: error })
@@ -40,10 +41,10 @@ export const ResetPasswordForm: FC = () => {
     >
       {contextHolder}
       <Form.Item
-        label="Email"
-        rules={[{ required: true, message: "Please input your login!" }]}
+        label="Password"
+        rules={[{ required: true, message: "Please input your password!" }]}
       >
-        <Input
+        <Input.Password
           onChange={(e) =>
             setResetCredentials((prev) => ({
               ...prev,
@@ -54,10 +55,10 @@ export const ResetPasswordForm: FC = () => {
         />
       </Form.Item>
       <Form.Item
-        label="Email"
-        rules={[{ required: true, message: "Please input your login!" }]}
+        label="Confirm Password"
+        rules={[{ required: true, message: "Please confirm your password!" }]}
       >
-        <Input
+        <Input.Password
           onChange={(e) =>
             setResetCredentials((prev) => ({
               ...prev,
@@ -68,7 +69,9 @@ export const ResetPasswordForm: FC = () => {
         />
       </Form.Item>
       <Form.Item css={styles.submitButtonContainer}>
-        <Button htmlType="submit">Reset Password</Button>
+        <Button htmlType="submit" type="primary">
+          Reset Password
+        </Button>
       </Form.Item>
     </Form>
   )
