@@ -43,7 +43,7 @@ export const ResetPasswordForm: FC<ResetPasswordFormProps> = ({
     <Form
       autoComplete="off"
       onFinish={handleResetPassword}
-      labelCol={{ span: 8 }}
+      labelCol={{ span: 12 }}
     >
       {contextHolder}
       <Form.Item
