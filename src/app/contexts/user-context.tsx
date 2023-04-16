@@ -6,12 +6,12 @@ import {
   Dispatch,
   useContext,
 } from "react"
-import { IUser } from "../../types/user"
 import { Nullable } from "../../types/common"
+import { IUser } from "@/entities/user/model"
 
 interface UserContextProps {
   user: Nullable<IUser>
-  setUser: Dispatch<React.SetStateAction<IUser | undefined>>
+  setUser: (user: IUser) => void
 }
 
 const UserContext = createContext<UserContextProps>({
@@ -20,12 +20,22 @@ const UserContext = createContext<UserContextProps>({
 })
 
 export const UserProvider: FC<PropsWithChildren> = ({ children }) => {
-  const [user, setUser] = useState<IUser>()
+  const [user, setUser] = useState<Nullable<IUser>>(
+    localStorage.getItem("user")
+      ? (JSON.parse(localStorage.getItem("user") || "") as IUser)
+      : null
+  )
+
+  const handleSetUser = (user: IUser) => {
+    setUser(user)
+    localStorage.setItem("user", JSON.stringify(user))
+  }
+
   return (
     <UserContext.Provider
       value={{
         user,
-        setUser,
+        setUser: handleSetUser,
       }}
     >
       {children}
