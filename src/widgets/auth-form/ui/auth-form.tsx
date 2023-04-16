@@ -5,6 +5,7 @@ import { styles } from "./styles"
 import { LoginForm } from "./login-form"
 import { ForgotPasswordForm } from "./forgot-password-form/forgot-password-form"
 import { ResetPasswordForm } from "./reset-password-form"
+import { useParams } from "react-router-dom"
 
 export const AuthForm: FC = () => {
   const [credentials, setCredentials] = useState<ICredentials>({
@@ -12,8 +13,10 @@ export const AuthForm: FC = () => {
     password: "",
   })
 
+  const { token } = useParams()
+
   const [authStep, setAuthStep] = useState<EAuthStep>(
-    false ? EAuthStep.ResetPassword : EAuthStep.Login
+    Boolean(token) ? EAuthStep.ResetPassword : EAuthStep.Login
   )
 
   const goToForgotPasswordStep = () => {
