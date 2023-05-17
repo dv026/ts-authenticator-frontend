@@ -10,11 +10,10 @@ import type {
 import { DeleteOutlined } from "@ant-design/icons"
 import { useNavigate } from "react-router-dom"
 
-import { apiKeyApi } from "@/entities"
+import { IApiKey, apiKeyApi } from "@/entities"
 
 import { useStore } from "../../../app/stores/root-store"
 import { InputModal } from "../../../shared/modal/modal"
-import { IApiKey } from "../../../types/api-key"
 import "./api-keys-table.css"
 
 const convertToDataType = (apiKeys: any) => {

@@ -1,11 +1,10 @@
 import { Route, Routes, Navigate, useParams } from "react-router-dom"
 
-import { useUser } from "./app/contexts/user-context"
 import { LoginPage } from "./pages/login-page/ui/login-page"
 import { HomePage } from "./pages/home-page/home-page"
 import Layout from "./shared/layout/layout"
 import { CreateUserPage } from "./pages/create-user/create-user"
-import { useEffect, useLayoutEffect } from "react"
+import { useEffect } from "react"
 import { useStore } from "./app/stores/root-store"
 import { observer } from "mobx-react-lite"
 import { DashboardPage } from "./pages/dashboard-page/dashboard-page"
@@ -14,7 +13,6 @@ import { ApiKeysPage } from "./pages/api-keys/api-keys-page"
 import { notification } from "antd"
 
 const App = observer(() => {
-  const [api, contextHolder] = notification.useNotification()
   // const { user } = useUser()
   const { authStore } = useStore()
   const { user, loading } = authStore
@@ -31,7 +29,6 @@ const App = observer(() => {
         <div>loading...</div>
       ) : user ? (
         <Layout>
-          {contextHolder}
           <Routes>
             <Route path="/dashboard" element={<DashboardPage />} />
             <Route path="/about" element={<div>about</div>} />
@@ -56,3 +53,5 @@ const App = observer(() => {
 })
 
 export default App
+
+// аксиос доделать так, чтобы работал с нотификациями как в e4f

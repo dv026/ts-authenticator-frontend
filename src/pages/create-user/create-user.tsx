@@ -51,7 +51,6 @@ export const CreateUserPage: React.FC = () => {
       onFinishFailed={onFinishFailed}
       autoComplete="off"
     >
-      {contextHolder}
       <Form.Item
         label="Login"
         rules={[{ required: true, message: "Please input your login!" }]}

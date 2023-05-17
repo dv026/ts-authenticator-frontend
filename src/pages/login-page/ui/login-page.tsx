@@ -1,5 +1,5 @@
 import { FC } from "react"
-import { Col, Row } from "antd"
+import { Col, Row, notification } from "antd"
 
 import { AuthForm } from "@/widgets/auth-form/ui/auth-form"
 
@@ -15,6 +15,15 @@ export const LoginPage: FC = () => {
         lg={{ span: 8 }}
         xl={{ span: 6 }}
       >
+        <button
+          onClick={() =>
+            notification.error({
+              message: "error",
+            })
+          }
+        >
+          norification
+        </button>
         <AuthForm />
       </Col>
     </Row>

@@ -1,23 +1,20 @@
 import { Space, notification } from "antd"
 import { UserTable } from "../../widgets/user-table/user-table"
+import { useEffect } from "react"
+import axios from "axios"
 
 export const DashboardPage = () => {
-  const [api, contextHolder] = notification.useNotification()
-
+  useEffect(() => {
+    axios
+      .get("https://jsonplaceholder.typicode.com/todos")
+      .then((response) => console.log(response))
+    axios
+      .get("https://jsonplaceholder.typicode.com/todos")
+      .then((response) => console.log(response))
+  }, [])
   return (
     <Space>
-      {contextHolder}
-      <button
-        onClick={() => {
-          api.info({
-            message: `Notification`,
-            description: "description",
-            placement: "topRight",
-          })
-        }}
-      >
-        show notification
-      </button>
+      show notification
       <UserTable />
     </Space>
   )

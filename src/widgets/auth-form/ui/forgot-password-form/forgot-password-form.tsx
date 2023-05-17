@@ -36,7 +36,6 @@ export const ForgotPasswordForm: FC<ForgotPasswordFormProps> = ({
       autoComplete="off"
       labelCol={{ span: 8 }}
     >
-      {contextHolder}
       <Form.Item
         label="Email"
         rules={[{ required: true, message: "Please input your login!" }]}

@@ -45,7 +45,6 @@ export const ResetPasswordForm: FC<ResetPasswordFormProps> = ({
       onFinish={handleResetPassword}
       labelCol={{ span: 12 }}
     >
-      {contextHolder}
       <Form.Item
         label="Password"
         rules={[{ required: true, message: "Please input your password!" }]}

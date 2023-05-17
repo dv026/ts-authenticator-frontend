@@ -1,4 +1,3 @@
-import { AuthCredentials } from "../../types/auth-credentials";
 import { Nullable } from "../../types/common";
 import {
   login as tsLogin,
@@ -8,6 +7,10 @@ import {
 import { makeAutoObservable } from 'mobx'
 import { IUser } from "@/entities";
 
+export interface AuthCredentials {
+  login: string
+  password: string
+}
 export class AuthStore {
   user: Nullable<IUser> = null
   loading: boolean = true

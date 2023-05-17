@@ -8,13 +8,13 @@ import { styles } from "./styles"
 // import { Modal } from "./shared/modal/modal"
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
-  <React.StrictMode>
-    <BrowserRouter>
-      <Global styles={styles} />
-      {/* <Modal /> */}
-      <UserProvider>
-        <App />
-      </UserProvider>
-    </BrowserRouter>
-  </React.StrictMode>
+  // <React.StrictMode>
+  <BrowserRouter>
+    <Global styles={styles} />
+    {/* <Modal /> */}
+    <UserProvider>
+      <App />
+    </UserProvider>
+  </BrowserRouter>
+  // </React.StrictMode>
 )
