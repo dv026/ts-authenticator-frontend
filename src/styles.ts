@@ -1,7 +1,8 @@
-import { css } from '@emotion/react'
+import { css } from "@emotion/react"
 
 export const styles = css`
-  html, body {
+  html,
+  body {
     margin: 0;
     padding: 0;
   }

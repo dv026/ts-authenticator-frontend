@@ -47,30 +47,32 @@ export const LoginForm: FC<LoginFormProp> = ({
   }
 
   const validateMessages = {
-    required: '${label} is required!',
+    required: "${label} is required!",
     types: {
-      email: '${label} is not a valid!',
-      number: '${label} is not a valid!',
+      email: "${label} is not a valid!",
+      number: "${label} is not a valid!",
     },
     number: {
-      range: '${label} must be between ${min} and ${max}',
+      range: "${label} must be between ${min} and ${max}",
     },
-  };
+  }
 
   return (
-    <Form labelCol={{ span: 8 }} css onFinish={handleAuth} autoComplete="off" validateMessages={validateMessages}>
+    <Form
+      labelCol={{ span: 8 }}
+      css
+      onFinish={handleAuth}
+      autoComplete="off"
+      validateMessages={validateMessages}
+    >
       <Form.Item
         label="Email"
         name="email"
-        rules={[{ required: true, type: 'email' }]}
+        rules={[{ required: true, type: "email" }]}
       >
         <Input value={login} onChange={(e) => setLogin(e.target.value)} />
       </Form.Item>
-      <Form.Item
-        label="Password"
-        name="password"
-        rules={[{ required: true }]}
-      >
+      <Form.Item label="Password" name="password" rules={[{ required: true }]}>
         <Input.Password
           value={password}
           onChange={(e) => setPassword(e.target.value)}

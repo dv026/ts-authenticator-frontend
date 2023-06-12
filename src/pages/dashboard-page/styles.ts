@@ -1,4 +1,4 @@
-import { css } from "@emotion/react";
+import { css } from "@emotion/react"
 
 export const styles = {
   dashboard: css`
@@ -6,5 +6,5 @@ export const styles = {
     flex-direction: column;
 
     gap: 40px;
-  `
+  `,
 }

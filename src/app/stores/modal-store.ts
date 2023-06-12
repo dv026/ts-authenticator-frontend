@@ -1,4 +1,4 @@
-import { makeAutoObservable } from 'mobx'
+import { makeAutoObservable } from "mobx"
 
 export class ModalStore {
   isModalOpen = false

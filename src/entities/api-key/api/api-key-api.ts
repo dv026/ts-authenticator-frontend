@@ -14,16 +14,16 @@ export const apiKeyApi = {
     return api.delete(`${userApiUrl}/api-key/${id}`)
   },
 
-  create: ({ name, userId }: { name: string, userId: string }) => {
+  create: ({ name, userId }: { name: string; userId: string }) => {
     return api.post(`${userApiUrl}/api-key`, {
       name,
-      userId
+      userId,
     })
   },
 
   update: (id: string, name: string) => {
     return api.put(`${userApiUrl}/api-key/${id}`, {
-      name
+      name,
     })
   },
 
@@ -33,7 +33,7 @@ export const apiKeyApi = {
 
   deleteMany: (ids: string[]) => {
     return api.post(`${userApiUrl}/api-keys`, {
-      ids
+      ids,
     })
-  }
+  },
 }

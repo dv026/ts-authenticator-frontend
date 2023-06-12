@@ -1,4 +1,3 @@
-import { Space, notification } from "antd"
 import { UserTable } from "../../widgets/user-table/user-table"
 import { useEffect } from "react"
 import axios from "axios"

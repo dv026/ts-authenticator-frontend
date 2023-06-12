@@ -29,14 +29,15 @@ const convertToDataType = (users: any) => {
 }
 
 export const UserTable: React.FC = observer(() => {
-  const [sorter, setSorter] = useState<SorterResult<IUser> | SorterResult<IUser>[]>({})
+  const [sorter, setSorter] = useState<
+    SorterResult<IUser> | SorterResult<IUser>[]
+  >({})
   const [selectedRowKeys, setSelectedRowKeys] = useState<string[]>([])
   const [currentPage, setCurrentPage] = useState(1)
   const [pageSize, setPageSize] = useState(10)
   const [totalCount, setTotalCount] = useState(0)
   const [filter, setFilter] = useState<Record<string, FilterValue | null>>({})
   const [users, setUsers] = useState<readonly IUser[]>([])
-
 
   const { apiKeyStore, authStore } = useStore()
 
@@ -65,7 +66,7 @@ export const UserTable: React.FC = observer(() => {
   ) => {
     console.log("Various parameters")
     if (!(sort as any).direction) {
-      (sort as any).direction = 'ascend'
+      ;(sort as any).direction = "ascend"
     }
     setSorter(sort)
     // setFilteredInfo(filters)
@@ -106,7 +107,8 @@ export const UserTable: React.FC = observer(() => {
       // },
       sorter: (a, b) => a.login.length - b.login.length,
       // sortOrder: sortedInfo.columnKey === "login" ? sortedInfo.order : null,
-      sortOrder: (sorter as any).columnKey === "login" ? (sorter as any).order : null,
+      sortOrder:
+        (sorter as any).columnKey === "login" ? (sorter as any).order : null,
       ellipsis: true,
     },
     {
@@ -155,16 +157,19 @@ export const UserTable: React.FC = observer(() => {
     if (!currentApiKey) return
 
     userApi
-      .getUsers({
-        currentPage,
-        pageSize,
-        login: filter.login ? JSON.stringify(filter.login) : "",
-        roles: filter.roles ? JSON.stringify(filter.roles) : "",
-        apiKey: currentApiKey,
-      }, {
-        field: (sorter as any).field,
-        direction: (sorter as any).order,
-      })
+      .getUsers(
+        {
+          currentPage,
+          pageSize,
+          login: filter.login ? JSON.stringify(filter.login) : "",
+          roles: filter.roles ? JSON.stringify(filter.roles) : "",
+          apiKey: currentApiKey,
+        },
+        {
+          field: (sorter as any).field,
+          direction: (sorter as any).order,
+        }
+      )
       .then((response) => {
         setUsers(convertToDataType(response.users))
         setTotalCount(response.totalCount)
@@ -182,48 +187,48 @@ export const UserTable: React.FC = observer(() => {
   }
 
   return (
-    <div style={{ position: 'relative' }}>
-      {!apiKeyStore.currentApiKeyId ? <div>Choose Api Key to see its users</div>
-      : (
+    <div style={{ position: "relative" }}>
+      {!apiKeyStore.currentApiKeyId ? (
+        <div>Choose Api Key to see its users</div>
+      ) : (
         <>
-
-      <Space
-        style={{ marginBottom: 16, display: "flex" }}
-        className="header-space"
-      >
-        <Button
-          danger
-          onClick={() => handleDeleteSelectedUsers(selectedRowKeys)}
-        >
-          Delete Selected
-        </Button>
-        <Button onClick={clearFilters}>Clear filters</Button>
-        <Button onClick={clearAll}>Clear filters and sorters</Button>
-        <Button
-          style={{ marginLeft: "auto" }}
-          type="primary"
-          onClick={() => navigate(routes.user.create)}
-        >
-          Create user
-        </Button>
-      </Space>
-      <AntdTable
-        rowSelection={rowSelection}
-        columns={columns}
-        dataSource={users}
-        // onRow={(val) => console.log("row", val)}
-        pagination={{
-          pageSize,
-          pageSizeOptions: [10, 20, 1],
-          onShowSizeChange: (_, pageSize) => setPageSize(pageSize),
-          showSizeChanger: true,
-          current: currentPage,
-          total: totalCount,
-          onChange: (currentPage) => setCurrentPage(currentPage),
-        }}
-        onChange={handleChange}
-      />
-      </>
+          <Space
+            style={{ marginBottom: 16, display: "flex" }}
+            className="header-space"
+          >
+            <Button
+              danger
+              onClick={() => handleDeleteSelectedUsers(selectedRowKeys)}
+            >
+              Delete Selected
+            </Button>
+            <Button onClick={clearFilters}>Clear filters</Button>
+            <Button onClick={clearAll}>Clear filters and sorters</Button>
+            <Button
+              style={{ marginLeft: "auto" }}
+              type="primary"
+              onClick={() => navigate(routes.user.create)}
+            >
+              Create user
+            </Button>
+          </Space>
+          <AntdTable
+            rowSelection={rowSelection}
+            columns={columns}
+            dataSource={users}
+            // onRow={(val) => console.log("row", val)}
+            pagination={{
+              pageSize,
+              pageSizeOptions: [10, 20, 1],
+              onShowSizeChange: (_, pageSize) => setPageSize(pageSize),
+              showSizeChanger: true,
+              current: currentPage,
+              total: totalCount,
+              onChange: (currentPage) => setCurrentPage(currentPage),
+            }}
+            onChange={handleChange}
+          />
+        </>
       )}
     </div>
   )

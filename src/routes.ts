@@ -1,5 +1,5 @@
 export const routes = {
   user: {
-    create: '/user/create'
-  }
+    create: "/user/create",
+  },
 }

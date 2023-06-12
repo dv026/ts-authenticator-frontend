@@ -1,2 +1,2 @@
-export { apiKeyApi } from './api'
-export type { ApiKeyModel, IApiKey } from './model'
+export { apiKeyApi } from "./api"
+export type { ApiKeyModel, IApiKey } from "./model"

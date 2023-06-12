@@ -29,14 +29,14 @@ export const ResetPasswordForm: FC<ResetPasswordFormProps> = ({
       resetCredentials.confirmPassword
     )
     if (errors.length === 0) {
-    //   resetPassword({
-    //     token: token || "",
-    //     newPassword: resetCredentials.password,
-    //   }).finally(() => setLoginStep())
-    // } else {
-    //   errors.forEach((error) => {
-    //     api.error({ message: error })
-    //   })
+      //   resetPassword({
+      //     token: token || "",
+      //     newPassword: resetCredentials.password,
+      //   }).finally(() => setLoginStep())
+      // } else {
+      //   errors.forEach((error) => {
+      //     api.error({ message: error })
+      //   })
     }
   }
 

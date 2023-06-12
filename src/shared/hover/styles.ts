@@ -1,4 +1,4 @@
-import { css } from "@emotion/react";
+import { css } from "@emotion/react"
 
 export const styles = {
   hover: css`
@@ -10,5 +10,5 @@ export const styles = {
     z-index: 100;
     top: 0;
     left: 0;
-  `
+  `,
 }

@@ -1,4 +1,4 @@
-import { css } from "@emotion/react";
+import { css } from "@emotion/react"
 
 export const styles = {
   submitButtonContainer: css`
@@ -10,5 +10,5 @@ export const styles = {
     display: flex;
     justify-content: space-between;
     margin-bottom: 0;
-  `
+  `,
 }

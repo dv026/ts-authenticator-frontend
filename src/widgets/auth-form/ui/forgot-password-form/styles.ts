@@ -1,4 +1,4 @@
-import { css } from "@emotion/react";
+import { css } from "@emotion/react"
 
 export const styles = {
   forgotPasswordForm: css`
@@ -15,5 +15,5 @@ export const styles = {
     left: 0;
     bottom: 0;
     padding: 0;
-  `
+  `,
 }

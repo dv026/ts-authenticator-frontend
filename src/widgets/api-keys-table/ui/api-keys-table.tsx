@@ -116,11 +116,11 @@ export const ApiKeysTable: React.FC = observer(() => {
 
   const refreshTable = () => {
     if (authStore.user?._id) {
-    apiKeyApi.getAll(authStore.user?._id).then((response) => {
-      // console.log(response)
-      setApiKeys(convertToDataType(response))
-    })
-  }
+      apiKeyApi.getAll(authStore.user?._id).then((response) => {
+        // console.log(response)
+        setApiKeys(convertToDataType(response))
+      })
+    }
   }
 
   const handleDeleteApiKey = async (id: string) => {
@@ -138,7 +138,7 @@ export const ApiKeysTable: React.FC = observer(() => {
   }
 
   const createApiKey = async (value: string) => {
-    await apiKeyApi.create({ name: value, userId: authStore.user?._id || '' })
+    await apiKeyApi.create({ name: value, userId: authStore.user?._id || "" })
     refreshTable()
   }
 

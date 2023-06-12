@@ -42,7 +42,12 @@ export const CreateUserPage: React.FC = () => {
     if (userId) {
       userApi.updateUser({ id: userId, login: login, password, roles: [role] })
     } else {
-      userApi.createUser({ login: login, password, roles: [role], apiKey: currentApiKey })
+      userApi.createUser({
+        login: login,
+        password,
+        roles: [role],
+        apiKey: currentApiKey,
+      })
     }
   }
 
