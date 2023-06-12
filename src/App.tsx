@@ -1,8 +1,7 @@
 import { Route, Routes, Navigate, useParams } from "react-router-dom"
 
 import { LoginPage } from "./pages/login-page/ui/login-page"
-import { HomePage } from "./pages/home-page/home-page"
-import Layout from "./shared/layout/layout"
+import AdminLayout from "./app/layouts/admin-layout/admin-layout"
 import { CreateUserPage } from "./pages/create-user/create-user"
 import { useEffect } from "react"
 import { useStore } from "./app/stores/root-store"
@@ -10,10 +9,9 @@ import { observer } from "mobx-react-lite"
 import { DashboardPage } from "./pages/dashboard-page/dashboard-page"
 import { SettingsPage } from "./pages/settings/settings-page"
 import { ApiKeysPage } from "./pages/api-keys/api-keys-page"
-import { notification } from "antd"
+import { Spinner } from "./shared/spinner/spinner"
 
 const App = observer(() => {
-  // const { user } = useUser()
   const { authStore } = useStore()
   const { user, loading } = authStore
   const params = useParams()
@@ -26,23 +24,22 @@ const App = observer(() => {
   return (
     <div className="App">
       {loading ? (
-        <div>loading...</div>
+        <Spinner />
       ) : user ? (
-        <Layout>
+        <AdminLayout>
           <Routes>
-            <Route path="/dashboard" element={<DashboardPage />} />
+            <Route path="/" element={<DashboardPage />} />
             <Route path="/about" element={<div>about</div>} />
             <Route path="/user/create" element={<CreateUserPage />} />
             <Route path="/user/edit/:id" element={<CreateUserPage />} />
             <Route path="/settings" element={<SettingsPage />} />
             <Route path="/api-keys" element={<ApiKeysPage />} />
 
-            <Route path="*" element={<Navigate to="/about" />} />
+            <Route path="*" element={<Navigate to="/" />} />
           </Routes>
-        </Layout>
+        </AdminLayout>
       ) : (
         <Routes>
-          <Route path="/" element={<HomePage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/reset-password/:token" element={<LoginPage />} />
           <Route path="*" element={<Navigate to="/login" />} />

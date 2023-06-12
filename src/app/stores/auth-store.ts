@@ -1,16 +1,20 @@
 import { Nullable } from "../../types/common";
-import {
-  login as tsLogin,
-  checkAuth as tsCheckAuth,
-  registration as tsRegistration,
-} from "ts-authenticator-client"
+import { authenticator } from "ts-authenticator-client"
 import { makeAutoObservable } from 'mobx'
 import { IUser } from "@/entities";
+import { notification } from "antd";
 
 export interface AuthCredentials {
   login: string
   password: string
 }
+
+const {
+  login: tsLogin,
+  checkAuth: tsCheckAuth,
+  registration: tsRegistration,
+} = authenticator('17KhMVb7mqjzhTLt7laDgWTH')
+
 export class AuthStore {
   user: Nullable<IUser> = null
   loading: boolean = true
@@ -37,8 +41,18 @@ export class AuthStore {
       login,
       password,
     }).then((response) => {
+      if (!response.user) {
+        notification.error({
+          message: (response as any).message || 'Internal Error',
+        })
+        return
+      }
       this.setUser(response.user)
       localStorage.setItem('accessToken', response.accessToken)
+    }).catch((error) => {
+      notification.error({
+        message: error.message || 'Internal Error',
+      })
     })
   }
 
@@ -50,6 +64,10 @@ export class AuthStore {
     }).then((response) => {
       this.setUser(response.user)
       localStorage.setItem('accessToken', response.accessToken)
+    }).catch((error) => {
+      notification.error({
+        message: error.message || 'Internal Error',
+      })
     })
   }
 

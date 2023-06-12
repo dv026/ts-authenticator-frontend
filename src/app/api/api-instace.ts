@@ -5,7 +5,7 @@ export const api = axios.create()
 
 api.interceptors.response.use((response) => {
   notification.success({ message: 'success' })
-  return response;
+  return response.data
 }, (error) => {
   notification.error({ message: error.message })
   return Promise.reject(error.message);

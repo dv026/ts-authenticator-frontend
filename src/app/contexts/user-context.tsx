@@ -3,11 +3,12 @@ import {
   PropsWithChildren,
   createContext,
   useState,
-  Dispatch,
   useContext,
 } from "react"
-import { Nullable } from "../../types/common"
+
 import { IUser } from "@/entities/user/model"
+
+import { Nullable } from "../../types/common"
 
 interface UserContextProps {
   user: Nullable<IUser>

@@ -1,6 +1,7 @@
 import { Button, Form, Input, notification } from "antd"
 import { FC, useState } from "react"
-import { resetPassword } from "ts-authenticator-client"
+// TODO: take it from store
+// import { resetPassword } from "ts-authenticator-client"
 import { useNavigate, useParams } from "react-router-dom"
 
 import { validateResetPasswords } from "../../lib/validate-password"
@@ -28,14 +29,14 @@ export const ResetPasswordForm: FC<ResetPasswordFormProps> = ({
       resetCredentials.confirmPassword
     )
     if (errors.length === 0) {
-      resetPassword({
-        token: token || "",
-        newPassword: resetCredentials.password,
-      }).finally(() => setLoginStep())
-    } else {
-      errors.forEach((error) => {
-        api.error({ message: error })
-      })
+    //   resetPassword({
+    //     token: token || "",
+    //     newPassword: resetCredentials.password,
+    //   }).finally(() => setLoginStep())
+    // } else {
+    //   errors.forEach((error) => {
+    //     api.error({ message: error })
+    //   })
     }
   }
 

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react"
 import { Button, Form, Input, Select, notification } from "antd"
 import { useParams } from "react-router-dom"
 import { userApi } from "@/entities"
+import { useStore } from "@/app/stores"
 
 const onFinishFailed = (errorInfo: any) => {
   console.log("Failed:", errorInfo)
@@ -20,11 +21,13 @@ export const CreateUserPage: React.FC = () => {
   const params = useParams()
   const userId = params.id
 
+  const { apiKeyStore } = useStore()
+
   const getUser = async () => {
     if (userId) {
       const response = await userApi.getUser(userId)
-      setLogin(response.data.login)
-      setRole(response.data.roles)
+      setLogin(response.login)
+      setRole(response.roles)
     }
   }
 
@@ -32,11 +35,14 @@ export const CreateUserPage: React.FC = () => {
     getUser()
   }, [])
 
-  const onFinish = (values: any) => {
+  const onFinish = () => {
+    const currentApiKey = apiKeyStore.currentApiKey?.value
+    if (!currentApiKey) return
+
     if (userId) {
       userApi.updateUser({ id: userId, login: login, password, roles: [role] })
     } else {
-      userApi.createUser({ login: login, password, roles: [role] })
+      userApi.createUser({ login: login, password, roles: [role], apiKey: currentApiKey })
     }
   }
 

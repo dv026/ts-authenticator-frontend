@@ -15,6 +15,7 @@ import { IApiKey, apiKeyApi } from "@/entities"
 import { useStore } from "../../../app/stores/root-store"
 import { InputModal } from "../../../shared/modal/modal"
 import "./api-keys-table.css"
+import { observer } from "mobx-react-lite"
 
 const convertToDataType = (apiKeys: any) => {
   return apiKeys.map((apiKey: any) => ({
@@ -23,8 +24,8 @@ const convertToDataType = (apiKeys: any) => {
   }))
 }
 
-export const ApiKeysTable: React.FC = () => {
-  const { modalStore } = useStore()
+export const ApiKeysTable: React.FC = observer(() => {
+  const { modalStore, authStore } = useStore()
 
   const { openModal } = modalStore
   const [sortedInfo, setSortedInfo] = useState<SorterResult<IApiKey>>({})
@@ -114,10 +115,12 @@ export const ApiKeysTable: React.FC = () => {
   ]
 
   const refreshTable = () => {
-    apiKeyApi.getAll().then((response) => {
+    if (authStore.user?._id) {
+    apiKeyApi.getAll(authStore.user?._id).then((response) => {
       // console.log(response)
-      setApiKeys(convertToDataType(response.data))
+      setApiKeys(convertToDataType(response))
     })
+  }
   }
 
   const handleDeleteApiKey = async (id: string) => {
@@ -135,7 +138,7 @@ export const ApiKeysTable: React.FC = () => {
   }
 
   const createApiKey = async (value: string) => {
-    await apiKeyApi.create({ name: value })
+    await apiKeyApi.create({ name: value, userId: authStore.user?._id || '' })
     refreshTable()
   }
 
@@ -179,4 +182,4 @@ export const ApiKeysTable: React.FC = () => {
       />
     </>
   )
-}
+})

@@ -1,13 +1,22 @@
 import { api } from '@/app/api/api-instace'
 
-// const userApiUrl = 'https://ts-authenticator.onrender.com/admin'
-const userApiUrl = 'http://localhost:3000/admin'
+const userApiUrl = import.meta.env.VITE_API_URL
+// const userApiUrl = 'http://localhost:3000/admin'
 
 export const userApi = {
-  getUsers: (queryFilterParams: IQueryFilterParams) => {
-    const filters = Object.entries(queryFilterParams).filter(([_, value]) => Boolean(value)).reduce((acc, [key, value]) => acc += `${key}=${value}&`, '')
-    console.log({ filters })
-    return api.get(`${userApiUrl}/users?${filters}`)
+  getUsers: (queryFilterParams: IQueryFilterParams, querySorterParams: { field: string, direction: 'descend' | 'ascend'}) => {
+    const filters = Object.entries(queryFilterParams)
+      .filter(([_, value]) => Boolean(value))
+      .reduce((acc, [key, value]) => acc += `${key}=${value}&`, '')
+
+      let sorter = ''
+      if (!querySorterParams.field) {
+        sorter = `field=login&direction=descend`
+      } else {
+        sorter = `field=${querySorterParams.field}&direction=${querySorterParams.direction}`
+      }
+
+    return api.get(`${userApiUrl}/users?${filters}&${sorter}`)
   },
 
   getUser: (id: string) => {
@@ -18,8 +27,8 @@ export const userApi = {
     return api.delete(`${userApiUrl}/user/${id}`)
   },
 
-  createUser: ({ login, password, roles }: { login: string, password: string, roles: string[]}) => {
-    return api.post(`${userApiUrl}/user`, { login, password, roles })
+  createUser: ({ login, password, roles, apiKey }: { login: string, password: string, roles: string[], apiKey: string}) => {
+    return api.post(`${userApiUrl}/user`, { login, password, roles, apiKey })
   },
 
   updateUser: ({ id, login, password, roles }: { id: string, login: string, password: string, roles: string[]}) => {
@@ -40,4 +49,5 @@ export interface IQueryFilterParams {
   pageSize?: number
   login?: string
   roles?: string
+  apiKey?: string
 }

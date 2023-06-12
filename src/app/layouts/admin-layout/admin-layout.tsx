@@ -7,7 +7,7 @@ import {
 import { Button, Col, MenuProps, Row } from "antd"
 import { Breadcrumb, Layout as AntdLayout, Menu, theme } from "antd"
 import { useNavigate } from "react-router-dom"
-import { useStore } from "../../app/stores/root-store"
+import { useStore } from "../../stores/root-store"
 
 const { Header, Content, Sider } = AntdLayout
 
@@ -30,7 +30,7 @@ const items2: MenuProps["items"] = [
   }
 })
 
-const Layout: FC<PropsWithChildren> = ({ children }) => {
+const AdminLayout: FC<PropsWithChildren> = ({ children }) => {
   const {
     token: { colorBgContainer },
   } = theme.useToken()
@@ -119,4 +119,4 @@ const Layout: FC<PropsWithChildren> = ({ children }) => {
   )
 }
 
-export default Layout
+export default AdminLayout

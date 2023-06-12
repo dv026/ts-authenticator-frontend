@@ -9,8 +9,8 @@ import { useParams } from "react-router-dom"
 
 export const AuthForm: FC = () => {
   const [credentials, setCredentials] = useState<ICredentials>({
-    login: "",
-    password: "",
+    login: "admin@g.com",
+    password: "1234",
   })
 
   const { token } = useParams()

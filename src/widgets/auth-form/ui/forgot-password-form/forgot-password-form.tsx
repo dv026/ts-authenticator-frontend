@@ -1,7 +1,8 @@
 import { FC } from "react"
 import { Button, Form, Input, notification } from "antd"
 import { LeftOutlined } from "@ant-design/icons"
-import { forgotPassword } from "ts-authenticator-client"
+// TODO: take it from store
+// import { forgotPassword } from "ts-authenticator-client"
 
 import { styles } from "./styles"
 
@@ -18,15 +19,15 @@ export const ForgotPasswordForm: FC<ForgotPasswordFormProps> = ({
   const [api, contextHolder] = notification.useNotification()
 
   const handleForgotPassword = () => {
-    forgotPassword(login)
-      .then(() => api.success({ message: "Message has been sent" }))
-      .catch(() => {
-        api.error({ message: "Email not found" })
-      })
-      .finally(() => {
-        setLoginStep()
-        setLogin("")
-      })
+    // forgotPassword(login)
+    //   .then(() => api.success({ message: "Message has been sent" }))
+    //   .catch(() => {
+    //     api.error({ message: "Email not found" })
+    //   })
+    //   .finally(() => {
+    //     setLoginStep()
+    //     setLogin("")
+    //   })
   }
 
   return (

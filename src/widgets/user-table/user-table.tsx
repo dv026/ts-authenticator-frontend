@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
-import type { TableProps as AntdTableProps } from "antd"
+import type { TableProps as AntdTableProps, TableProps } from "antd"
 import type { TableRowSelection } from "antd/es/table/interface"
 import { Button, Space, Table as AntdTable } from "antd"
 import type {
@@ -13,23 +13,32 @@ import { DeleteOutlined, EditOutlined } from "@ant-design/icons"
 import { IUser, userApi } from "@/entities"
 
 import "./user-table.css"
+import { useStore } from "@/app/stores"
+import { Hover } from "@/shared/hover/hover"
+import { observer } from "mobx-react-lite"
+import { routes } from "@/routes"
 
 const convertToDataType = (users: any) => {
+  if (!users) {
+    return []
+  }
   return users.map((user: any) => ({
     ...user,
     key: user._id,
   }))
 }
 
-export const UserTable: React.FC = () => {
-  const [sortedInfo, setSortedInfo] = useState<SorterResult<IUser>>({})
-
+export const UserTable: React.FC = observer(() => {
+  const [sorter, setSorter] = useState<SorterResult<IUser> | SorterResult<IUser>[]>({})
   const [selectedRowKeys, setSelectedRowKeys] = useState<string[]>([])
   const [currentPage, setCurrentPage] = useState(1)
   const [pageSize, setPageSize] = useState(10)
   const [totalCount, setTotalCount] = useState(0)
   const [filter, setFilter] = useState<Record<string, FilterValue | null>>({})
   const [users, setUsers] = useState<readonly IUser[]>([])
+
+
+  const { apiKeyStore, authStore } = useStore()
 
   const navigate = useNavigate()
 
@@ -40,7 +49,7 @@ export const UserTable: React.FC = () => {
 
   useEffect(() => {
     refreshTable()
-  }, [currentPage, pageSize, filter])
+  }, [currentPage, pageSize, filter, apiKeyStore.currentApiKey])
 
   const rowSelection: TableRowSelection<IUser> = {
     selectedRowKeys,
@@ -54,10 +63,11 @@ export const UserTable: React.FC = () => {
     sort,
     t
   ) => {
-    // console.log("Various parameters")
-    // console.log({ pagination })
-    // console.log({ filters })
-    // console.log({ sorter })
+    console.log("Various parameters")
+    if (!(sort as any).direction) {
+      (sort as any).direction = 'ascend'
+    }
+    setSorter(sort)
     // setFilteredInfo(filters)
     // setSortedInfo(sorter as SorterResult<IUser>)
     setFilter(filter)
@@ -69,11 +79,11 @@ export const UserTable: React.FC = () => {
 
   const clearAll = () => {
     // setFilteredInfo({})
-    setSortedInfo({})
+    setSorter({})
   }
 
   const setAgeSort = () => {
-    setSortedInfo({
+    setSorter({
       order: "descend",
       columnKey: "login",
     })
@@ -95,7 +105,8 @@ export const UserTable: React.FC = () => {
       //   return true
       // },
       sorter: (a, b) => a.login.length - b.login.length,
-      sortOrder: sortedInfo.columnKey === "login" ? sortedInfo.order : null,
+      // sortOrder: sortedInfo.columnKey === "login" ? sortedInfo.order : null,
+      sortOrder: (sorter as any).columnKey === "login" ? (sorter as any).order : null,
       ellipsis: true,
     },
     {
@@ -140,16 +151,23 @@ export const UserTable: React.FC = () => {
   ]
 
   const refreshTable = () => {
+    const currentApiKey = apiKeyStore.currentApiKey?.value
+    if (!currentApiKey) return
+
     userApi
       .getUsers({
         currentPage,
         pageSize,
         login: filter.login ? JSON.stringify(filter.login) : "",
         roles: filter.roles ? JSON.stringify(filter.roles) : "",
+        apiKey: currentApiKey,
+      }, {
+        field: (sorter as any).field,
+        direction: (sorter as any).order,
       })
       .then((response) => {
-        setUsers(convertToDataType(response.data.users))
-        setTotalCount(response.data.totalCount)
+        setUsers(convertToDataType(response.users))
+        setTotalCount(response.totalCount)
       })
   }
 
@@ -164,7 +182,11 @@ export const UserTable: React.FC = () => {
   }
 
   return (
-    <>
+    <div style={{ position: 'relative' }}>
+      {!apiKeyStore.currentApiKeyId ? <div>Choose Api Key to see its users</div>
+      : (
+        <>
+
       <Space
         style={{ marginBottom: 16, display: "flex" }}
         className="header-space"
@@ -180,13 +202,12 @@ export const UserTable: React.FC = () => {
         <Button
           style={{ marginLeft: "auto" }}
           type="primary"
-          onClick={() => navigate("/user/create")}
+          onClick={() => navigate(routes.user.create)}
         >
           Create user
         </Button>
       </Space>
       <AntdTable
-        // onChnage={() =>  null}
         rowSelection={rowSelection}
         columns={columns}
         dataSource={users}
@@ -202,6 +223,8 @@ export const UserTable: React.FC = () => {
         }}
         onChange={handleChange}
       />
-    </>
+      </>
+      )}
+    </div>
   )
-}
+})
