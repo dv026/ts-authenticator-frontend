@@ -170,7 +170,7 @@ export const UserTable: React.FC = observer(() => {
           direction: (sorter as any).order,
         }
       )
-      .then((response) => {
+      .then((response: any) => {
         setUsers(convertToDataType(response.users))
         setTotalCount(response.totalCount)
       })
