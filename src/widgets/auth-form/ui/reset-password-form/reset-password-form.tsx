@@ -1,10 +1,8 @@
-import { Button, Form, Input, notification } from "antd"
+import { Button, Form, Input } from "antd"
 import { FC, useState } from "react"
-// TODO: take it from store
-// import { resetPassword } from "ts-authenticator-client"
-import { useNavigate, useParams } from "react-router-dom"
+import { useParams } from "react-router-dom"
 
-import { validateResetPasswords } from "../../lib/validate-password"
+import { useStore } from "@/app/stores"
 import { styles } from "./styles"
 import { IResetCredentials } from "../../model"
 
@@ -16,27 +14,32 @@ export const ResetPasswordForm: FC<ResetPasswordFormProps> = ({
   setLoginStep,
 }) => {
   const { token } = useParams()
-  const navigate = useNavigate()
-  const [api, contextHolder] = notification.useNotification()
+  const { authStore } = useStore()
   const [resetCredentials, setResetCredentials] = useState<IResetCredentials>({
     password: "",
     confirmPassword: "",
   })
 
   const handleResetPassword = () => {
-    const errors = validateResetPasswords(
-      resetCredentials.password,
-      resetCredentials.confirmPassword
-    )
-    if (errors.length === 0) {
-      //   resetPassword({
-      //     token: token || "",
-      //     newPassword: resetCredentials.password,
-      //   }).finally(() => setLoginStep())
-      // } else {
-      //   errors.forEach((error) => {
-      //     api.error({ message: error })
-      //   })
+    authStore
+      .resetPassword({
+        token: token || "",
+        newPassword: resetCredentials.password,
+      })
+      .finally(() => setLoginStep())
+  }
+
+  const validator = async (rule: any, value: any, callback: any) => {
+    if (value && value.length > 3) {
+      return Promise.resolve()
+    } else {
+      return Promise.reject("Length should be more 3")
+    }
+  }
+
+  const confirmValidator = async (rule: any, value: any, callback: any) => {
+    if (resetCredentials.confirmPassword !== resetCredentials.password) {
+      return Promise.reject("Not equal")
     }
   }
 
@@ -48,7 +51,9 @@ export const ResetPasswordForm: FC<ResetPasswordFormProps> = ({
     >
       <Form.Item
         label="Password"
-        rules={[{ required: true, message: "Please input your password!" }]}
+        name="password"
+        validateTrigger={["onChange", "onBlur", "onFocus"]}
+        rules={[{ validator, required: true }]}
       >
         <Input.Password
           onChange={(e) =>
@@ -62,7 +67,9 @@ export const ResetPasswordForm: FC<ResetPasswordFormProps> = ({
       </Form.Item>
       <Form.Item
         label="Confirm Password"
-        rules={[{ required: true, message: "Please confirm your password!" }]}
+        name="confirmPassword"
+        validateTrigger={["onChange", "onBlur", "onFocus"]}
+        rules={[{ required: true, validator: confirmValidator }]}
       >
         <Input.Password
           onChange={(e) =>

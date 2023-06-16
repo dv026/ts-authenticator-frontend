@@ -1,18 +1,26 @@
-import { Nullable } from "../../types/common"
 import { authenticator } from "ts-authenticator-client"
 import { makeAutoObservable } from "mobx"
-import { IUser } from "@/entities"
 import { notification } from "antd"
+
+import { IUser } from "@/entities"
+import { Nullable } from "../../types/common"
 
 export interface AuthCredentials {
   login: string
   password: string
 }
 
+export interface ResetPasswordCredentials {
+  token: string
+  newPassword: string
+}
+
 const {
   login: tsLogin,
   checkAuth: tsCheckAuth,
   registration: tsRegistration,
+  forgotPassword: tsForgotPassword,
+  resetPassword: tsResetPassword,
 } = authenticator("17KhMVb7mqjzhTLt7laDgWTH")
 
 export class AuthStore {
@@ -41,13 +49,14 @@ export class AuthStore {
       login,
       password,
     })
-      .then((response) => {
-        if (!response.user) {
+      .then((response: any) => {
+        if (response.status !== 200) {
           notification.error({
-            message: (response as any).message || "Internal Error",
+            message: response.message || "Internal Error",
           })
-          return
+          return Promise.reject()
         }
+
         this.setUser(response.user)
         localStorage.setItem("accessToken", response.accessToken)
       })
@@ -63,11 +72,18 @@ export class AuthStore {
       login,
       password,
     })
-      .then((response) => {
+      .then((response: any) => {
+        if (response.status !== 200) {
+          notification.error({
+            message: response.message || "Internal Error",
+          })
+          return Promise.reject()
+        }
+
         this.setUser(response.user)
         localStorage.setItem("accessToken", response.accessToken)
       })
-      .catch((error) => {
+      .catch((error: any) => {
         notification.error({
           message: error.message || "Internal Error",
         })
@@ -83,5 +99,26 @@ export class AuthStore {
         }
       })
       .finally(() => this.setLoading(false))
+  }
+
+  forgowPassword({ login }: Pick<AuthCredentials, "login">) {
+    return tsForgotPassword(login).then((response: any) => {
+      if (response.status !== 200) {
+        notification.error({
+          message: response.message || "Internal Error",
+        })
+        return Promise.reject()
+      }
+
+      this.setUser(response.user)
+      localStorage.setItem("accessToken", response.accessToken)
+      notification.success({
+        message: response.message,
+      })
+    })
+  }
+
+  resetPassword({ newPassword, token }: ResetPasswordCredentials) {
+    return tsResetPassword({ token, newPassword })
   }
 }

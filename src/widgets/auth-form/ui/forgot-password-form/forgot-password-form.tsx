@@ -1,10 +1,9 @@
 import { FC } from "react"
 import { Button, Form, Input, notification } from "antd"
 import { LeftOutlined } from "@ant-design/icons"
-// TODO: take it from store
-// import { forgotPassword } from "ts-authenticator-client"
 
 import { styles } from "./styles"
+import { useStore } from "@/app/stores"
 
 export interface ForgotPasswordFormProps {
   login: string
@@ -16,18 +15,10 @@ export const ForgotPasswordForm: FC<ForgotPasswordFormProps> = ({
   setLoginStep,
   setLogin,
 }) => {
-  const [api, contextHolder] = notification.useNotification()
+  const { authStore } = useStore()
 
   const handleForgotPassword = () => {
-    // forgotPassword(login)
-    //   .then(() => api.success({ message: "Message has been sent" }))
-    //   .catch(() => {
-    //     api.error({ message: "Email not found" })
-    //   })
-    //   .finally(() => {
-    //     setLoginStep()
-    //     setLogin("")
-    //   })
+    return authStore.forgowPassword({ login }).then(() => setLoginStep())
   }
 
   return (
@@ -39,7 +30,14 @@ export const ForgotPasswordForm: FC<ForgotPasswordFormProps> = ({
     >
       <Form.Item
         label="Email"
-        rules={[{ required: true, message: "Please input your login!" }]}
+        name="email"
+        rules={[
+          {
+            required: true,
+            type: "email",
+            message: "Please input your login!",
+          },
+        ]}
       >
         <Input value={login} onChange={(e) => setLogin(e.target.value)} />
       </Form.Item>
