@@ -26,8 +26,8 @@ export const CreateUserPage: React.FC = () => {
   const getUser = async () => {
     if (userId) {
       const response = await userApi.getUser(userId)
-      setLogin(response.login)
-      setRole(response.roles)
+      setLogin(response.data.login)
+      setRole(response.data.roles)
     }
   }
 
