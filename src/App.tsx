@@ -52,3 +52,6 @@ const App = observer(() => {
 export default App
 
 // аксиос доделать так, чтобы работал с нотификациями как в e4f
+
+// убрал статусы на беке, теперь нужно поддержать их проверку из response.status
+// а не из response.data.status

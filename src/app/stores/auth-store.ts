@@ -50,15 +50,15 @@ export class AuthStore {
       password,
     })
       .then((response: any) => {
-        if (response.status !== 200) {
+        if (response.status && response.status !== 200) {
           notification.error({
-            message: response.message || "Internal Error",
+            message: response.data.message || "Internal Error",
           })
           return Promise.reject()
         }
 
-        this.setUser(response.user)
-        localStorage.setItem("accessToken", response.accessToken)
+        this.setUser(response.data.user)
+        localStorage.setItem("accessToken", response.data.accessToken)
       })
       .catch((error) => {
         notification.error({
