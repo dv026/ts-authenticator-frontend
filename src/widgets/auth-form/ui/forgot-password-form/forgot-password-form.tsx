@@ -1,4 +1,4 @@
-import { FC } from "react"
+import { FC, useEffect } from "react"
 import { Button, Form, Input, notification } from "antd"
 import { LeftOutlined } from "@ant-design/icons"
 
@@ -16,6 +16,13 @@ export const ForgotPasswordForm: FC<ForgotPasswordFormProps> = ({
   setLogin,
 }) => {
   const { authStore } = useStore()
+  const [form] = Form.useForm()
+
+  useEffect(() => {
+    form.setFieldsValue({
+      email: login,
+    })
+  }, [])
 
   const handleForgotPassword = () => {
     return authStore.forgowPassword({ login }).then(() => setLoginStep())
@@ -23,6 +30,7 @@ export const ForgotPasswordForm: FC<ForgotPasswordFormProps> = ({
 
   return (
     <Form
+      form={form}
       css={styles.forgotPasswordForm}
       onFinish={handleForgotPassword}
       autoComplete="off"
@@ -39,7 +47,7 @@ export const ForgotPasswordForm: FC<ForgotPasswordFormProps> = ({
           },
         ]}
       >
-        <Input value={login} onChange={(e) => setLogin(e.target.value)} />
+        <Input onChange={(e) => setLogin(e.target.value)} />
       </Form.Item>
       <Form.Item css={styles.submitButton}>
         <Button htmlType="submit" type="primary">

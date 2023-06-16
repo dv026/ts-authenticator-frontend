@@ -1,5 +1,5 @@
 import { Button, Form, Input } from "antd"
-import { FC } from "react"
+import { FC, useEffect } from "react"
 
 import { useStore } from "@/app/index"
 
@@ -27,6 +27,7 @@ export const LoginForm: FC<LoginFormProp> = ({
   setPassword,
 }) => {
   const { authStore } = useStore()
+  const [form] = Form.useForm()
 
   const isRegistrationStep = !isLoginStep
 
@@ -57,10 +58,17 @@ export const LoginForm: FC<LoginFormProp> = ({
     },
   }
 
+  useEffect(() => {
+    form.setFieldsValue({
+      email: login,
+      password,
+    })
+  }, [])
+
   return (
     <Form
+      form={form}
       labelCol={{ span: 8 }}
-      css
       onFinish={handleAuth}
       autoComplete="off"
       validateMessages={validateMessages}
